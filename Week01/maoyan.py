@@ -1,20 +1,37 @@
-from bs4 import BeautifulSoup as bs
-import requests
-import re,csv
-user_agent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko)'
-header = {'user-agent':user_agent}
-myurl = 'https://maoyan.com/films?showType=3'
-response = requests.get(myurl,headers = header)
+import scrapy
+from scrapy.selector import Selector
+from items import MaoyanItem
 
-bs_info = bs(response.text,'html.parser')
+class MaoyanSpider(scrapy.Spider):
+    name = 'maoyan'
+    allowed_domains = ['maoyan.com']
+    start_urls = ['https://maoyan.com/films?showType=3']
 
-for tags in bs_info.find_all('div', attr = {'class':'movie-item-hover'}):
-    for atag in tags.find_all('a',):
-        name = atag.find('span',class_='name')
-        time_ = atag.find('span',class_='hover-tag')
-        type_ = atag.find('span',class_='hover-tag')
-        with open("movie.csv", "w", encoding="utf-8", newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow({'movie_name':name,'movie_time':time_,'movie_type':type_})
-
-#           
+    def parse(self, response):
+        items = items = MaoyanItem()
+        i = 0
+        
+        while i<10:
+            urls = Selector(response=response).xpath('//div[@class="movie-item film-channel"]')
+            for url in urls:
+                
+                link = url.xpath('./a/@href')    
+                items.append(link)
+                
+            i += 1  
+            
+        yield scrapy.Request(url=link,callback=self.parse2)
+        
+    def parse2(self,response):
+        item = response.meta['item']
+        items =[]
+        
+        title = item.xpath('/html/body/div[3]/div/div[2]/div[1]/h1')
+        date_time = item.xpath('/html/body/div[3]/div/div[2]/div[1]/ul/li[3]')
+        movie_type = item.xpath('/html/body/div[3]/div/div[2]/div[1]/ul/li[1]')
+        
+        items['title'] = title
+        items['date_time'] = date_time
+        items['movie_type'] = movie_type
+        
+        yield item
