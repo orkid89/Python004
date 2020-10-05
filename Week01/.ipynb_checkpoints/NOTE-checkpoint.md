@@ -66,7 +66,6 @@ text = '''<a id="tab-login" class="tab-login" href="javascript:void(0);" onclick
   4.2 创建一个爬虫，scrapy genspider xxx（爬虫名） xxx.com （爬取域） #进入项目路径后创建
   4.3 进行爬虫 ， scrapy crawl XXX
   4.4 框架
-      4.4.1 items 
-      4.4.2 pipelines 项目管道 可以清理html数据，验证抓取的数据，检查重复项，将抓到的数据存储到数据库中
+      4.4.1 pipelines 项目管道 可以清理html数据，验证抓取的数据，检查重复项，将抓到的数据存储到数据库中
       
         
