@@ -27,7 +27,7 @@
        host = conf.get("host")
        
     
-2.python连接SQL ,保存文件在pipeline中增加功能
+2.python连接SQL
   2.1 import pymysql
       
       
@@ -38,11 +38,7 @@
 4.使用fake-useragent 报错 FakeUserAgentError('Maximum amount of retries reached')
  解决办法：下载： https://fake-useragent.herokuapp.com/browsers/0.1.11 并另存为：fake_useragent.json
  
-5.下载selenium后运行报错ImportError: cannot import name 'selenium'
- 解决办法：重装系统
- 
-6.xpath('//a[contains(@class,"btn-account")]')意思是：取class含有"btn-account"的元素
-
+5.
 
 
 
